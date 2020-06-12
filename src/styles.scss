@@ -1,0 +1,41 @@
+form {
+	max-width: 460px;
+	margin: 0 auto;
+}
+
+.input-wrap {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.input-error {
+	border: 1px solid #ff0c0c;
+}
+
+.input-error-message {
+	font-size: 13px;
+	color: #ff0c0c;
+	padding: 3px 0;
+	letter-spacing: 1px;
+}
+
+.input {
+	padding: 6px 8px;
+	border-radius: 3px;
+	border: 1px solid #4b4b4b;
+	outline: none;
+
+	&:focus {
+	  box-shadow: 0 0 0 1px #80d5ff;
+	}
+}
+
+button {
+	border: 1px solid black;
+	padding: 10px 16px;
+	border-radius: 3px;
+	margin-top: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+}

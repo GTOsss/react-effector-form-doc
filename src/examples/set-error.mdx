@@ -1,0 +1,68 @@
+---
+name: Set error
+menu: Examples
+---
+import { Playground } from 'docz';
+import SetError from './set-error';
+
+<Playground>
+	<SetError />
+</Playground>
+
+
+```jsx
+import {useForm} from 'react-effector-form';
+import React from 'react';
+
+const Input = ({
+  controller,
+  label,
+}) => {
+  const {input, form, fieldState, error} = controller();
+  const showError = form.submitted || fieldState.blurred;
+
+  return (
+    <div className="input-wrap">
+      <label>{label}</label>
+      <input {...input} value={input.value || ''} className="input" />
+      {(showError) && error && (
+        <div className="input-error-message">
+          {error}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const Form = () => {
+  const {handleSubmit, controller, setError} = useForm();
+
+  const onSubmit = ({values, form}) => {
+    if (!form.hasError) {
+      alert(JSON.stringify(values, null, '  '));
+    }
+  };
+
+  const createSetError = (field, value) => {
+    setError({field, value});
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input label="Username" controller={controller({name: 'username'})} />
+      <Input label="First name" controller={controller({name: 'profile.firstName'})}/>
+      <Input label="Last name" controller={controller({name: 'profile.lastName'})} />
+      <button type="submit">submit</button>
+      <button onClick={createSetError('profile.lastName', 'error for profile.lastName')} type="button">
+        set error lastName
+      </button>
+      <button onClick={createSetError('profile.lastName', undefined)} type="button">
+        remove error lastName
+      </button>
+    </form>
+  );
+}
+
+export default Form;
+
+```

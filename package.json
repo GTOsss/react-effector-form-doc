@@ -1,0 +1,33 @@
+{
+  "name": "docz-example-typescript",
+  "version": "2.0.0-rc.41",
+  "license": "ISC",
+  "files": [
+    "src/",
+    "doczrc.js",
+    "tsconfig.json",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "docz dev",
+    "build": "docz build"
+  },
+  "author": "Goncharov Timofey",
+  "dependencies": {
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
+    "classnames": "^2.2.6",
+    "docz": "latest",
+    "effector": "^20.16.0",
+    "effector-react": "^20.7.4",
+    "gatsby-plugin-sass": "^2.3.4",
+    "node-sass": "^4.14.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-effector-form": "^1.0.10"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4"
+  }
+}
