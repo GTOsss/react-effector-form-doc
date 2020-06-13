@@ -46,32 +46,12 @@ const Form = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Username"
-          controller={controller({
-            name: 'username',
-            validate: validateRequired,
-          })}
-        />
-        <Input
-          label="First name"
-          controller={controller({
-            name: 'profile.firstName',
-            validate: validateRequired,
-          })}
-        />
-        <Input
-          label="Last name"
-          controller={controller({
-            name: 'profile.lastName',
-            validate: validateRequired,
-          })}
-        />
-        <button type="submit">submit</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input label="Username" controller={controller({name: 'username', validate: validateRequired})} />
+      <Input label="First name" controller={controller({name: 'profile.firstName', validate: validateRequired})} />
+      <Input label="Last name" controller={controller({name: 'profile.lastName', validate: validateRequired})} />
+      <button type="submit">submit</button>
+    </form>
   );
 }
 

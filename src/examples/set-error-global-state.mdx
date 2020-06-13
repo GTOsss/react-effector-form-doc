@@ -5,16 +5,17 @@ menu: Examples
 import { Playground } from 'docz';
 import SetErrorGlobalState from './set-error-global-state';
 
+# Set error global state
+
 <Playground>
 	<SetErrorGlobalState />
 </Playground>
 
+<br />
 
+UserStore.js
 ```jsx
-import {useForm, deleteIn} from 'react-effector-form';
 import {createStore, createEvent} from 'effector';
-import React from 'react';
-
 const setOrDeleteErrorGlobalState = createEvent();
 
 const $errorsInline = createStore({});
@@ -35,6 +36,11 @@ $form.on(setOrDeleteErrorGlobalState, (state) => {
     // submitted: true // Or you can set submitted true to display errors if you don't use forcedError
   };
 });
+```
+
+Input.jsx
+```jsx
+import React from 'react';
 
 const Input = ({
   controller,
@@ -55,6 +61,14 @@ const Input = ({
     </div>
   );
 };
+```
+
+Form.jsx
+```jsx
+import React from 'react';
+import {useForm, deleteIn} from 'react-effector-form';
+import Input from 'Input';
+import {$values, $errorsInline, setOrDeleteErrorGlobalState} from 'UserStore';
 
 const Form = () => {
   const {handleSubmit, controller} = useForm({$errorsInline, $form});

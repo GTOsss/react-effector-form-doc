@@ -5,15 +5,17 @@ menu: Examples
 import { Playground } from 'docz';
 import InitialValues from './initial-values';
 
+# Initial Values
+
 <Playground>
 	<InitialValues />
 </Playground>
 
+<br />
 
+UserStore.jsx
 ```jsx
-import {useForm} from 'react-effector-form';
 import {createStore} from 'effector';
-import React from 'react';
 
 const initialValues = {
   userName: 'gtosss',
@@ -23,7 +25,19 @@ const initialValues = {
   }
 };
 
+const resetValuesToInitial = createEvent();
+const clearValues = createEvent();
+
 const $values = createStore(initialValues);
+
+$values.reset(resetValuesToInitial);
+$values.on(clearValues, () => ({}));
+
+```
+
+Input.jsx
+```jsx
+import React from 'react';
 
 const Input = ({
   controller,
@@ -38,6 +52,13 @@ const Input = ({
     </div>
   );
 };
+```
+Form.jsx
+```jsx
+import React from 'react';
+import {useForm} from 'react-effector-form';
+import {$values, resetValuesToInitial, clearValues} from 'UserStore';
+import Input from 'Input';
 
 const Form = () => {
   const {handleSubmit, controller} = useForm({$values});
@@ -47,21 +68,14 @@ const Form = () => {
   };
 
   return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<Input
-				label="Username"
-				controller={controller({name: 'username'})}
-			/>
-			<Input
-				label="First name"
-				controller={controller({name: 'profile.firstName'})}
-			/>
-			<Input
-				label="Last name"
-				controller={controller({name: 'profile.lastName'})}
-			/>
-			<button type="submit">submit</button>
-		</form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input label="Username" controller={controller({name: 'username'})} />
+      <Input label="First name" controller={controller({name: 'profile.firstName'})} />
+      <Input label="Last name" controller={controller({name: 'profile.lastName'})} />
+      <button type="submit">submit</button>
+      <button type="button" onClick={() => resetValuesToInitial()}>reset</button>
+      <button type="button" onClick={() => clearValues()}>clear</button>
+    </form>
   );
 }
 ```

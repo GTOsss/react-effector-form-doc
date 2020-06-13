@@ -1,5 +1,6 @@
 export default {
   typescript: true,
+  title: 'React Hook Form',
   menu: [
     'Getting Started',
     {
@@ -11,7 +12,6 @@ export default {
         'Field level validation',
         'Set error',
         'Set error global state',
-        'Integrate global state'
       ]
     }
   ],

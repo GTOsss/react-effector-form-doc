@@ -2,7 +2,7 @@ import {useForm} from 'react-effector-form';
 import {createStore, createEvent} from 'effector';
 import React from 'react';
 
-const initialValues = {
+const user = {
   username: 'gtosss',
   profile: {
     firstName: 'Timofey',
@@ -10,13 +10,13 @@ const initialValues = {
   },
 };
 
-const resetValuesToInitial = createEvent();
-const clearValues = createEvent();
+const setUser = createEvent();
+const clearUser = createEvent();
 
-const $values = createStore(initialValues);
+const $values = createStore({});
 
-$values.reset(resetValuesToInitial);
-$values.on(clearValues, () => ({}));
+$values.on(setUser, () => user);
+$values.on(clearUser, () => ({}));
 
 const Input = ({
   controller,
@@ -44,9 +44,9 @@ const Form = () => {
       <Input label="Username" controller={controller({name: 'username'})} />
       <Input label="First name" controller={controller({name: 'profile.firstName'})} />
       <Input label="Last name" controller={controller({name: 'profile.lastName'})} />
+      <button type="button" onClick={() => setUser()}>load user</button>
+      <button type="button" onClick={() => clearUser()}>clear user</button>
       <button type="submit">submit</button>
-      <button type="button" onClick={() => resetValuesToInitial()}>reset</button>
-      <button type="button" onClick={() => clearValues()}>clear</button>
     </form>
   );
 }

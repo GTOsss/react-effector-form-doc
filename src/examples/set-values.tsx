@@ -1,101 +1,7 @@
----
-name: Set values
-menu: Examples
----
-import { Playground } from 'docz';
-import SetValues from './set-values';
-import SetValuesSimple from './set-values-simple';
-
-# Set values
-
-## Simple example
-
-<Playground>
-	<SetValuesSimple />
-</Playground>
-
-<br />
-
-UserStore.js
-```jsx
-import {createStore, createEvent} from 'effector';
-
-const user = {
-  username: 'gtosss',
-  profile: {
-    firstName: 'Timofey',
-    lastName: 'Goncharov',
-  },
-};
-
-const setUser = createEvent();
-const clearUser = createEvent();
-
-const $values = createStore({});
-
-$values.on(setUser, () => user);
-$values.on(clearUser, () => ({}));
-```
-Input.jsx
-```jsx
-import React from 'react';
-
-const Input = ({
-  controller,
-  label,
-}) => {
-  const {input} = controller();
-
-  return (
-    <div className="input-wrap">
-      <label>{label}</label>
-      <input {...input} value={input.value || ''} className="input" />
-    </div>
-  );
-};
-```
-
-Form.jsx
-
-```jsx
-import React from 'react';
 import {useForm} from 'react-effector-form';
-import {$values, setUser, clearUser} from 'UserStore'
-import Input from 'Input';
-
-const Form = () => {
-  const {handleSubmit, controller} = useForm({$values});
-
-  const onSubmit = ({values}) => {
-    alert(JSON.stringify(values, null, '  '));
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input label="Username" controller={controller({name: 'username'})} />
-      <Input label="First name" controller={controller({name: 'profile.firstName'})} />
-      <Input label="Last name" controller={controller({name: 'profile.lastName'})} />
-      <button type="button" onClick={() => setUser()}>load user</button>
-      <button type="button" onClick={() => clearUser()}>clear user</button>
-      <button type="submit">submit</button>
-    </form>
-  );
-}
-
-export default Form;
-```
-
-## Advanced example
-
-<Playground>
-	<SetValues />
-</Playground>
-
-<br />
-
-UserStore.js
-```jsx
 import {createStore, createEffect, sample, createEvent, combine} from 'effector';
+import {useStore} from 'effector-react';
+import React from 'react';
 import isEqual from 'lodash.isequal';
 
 const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
@@ -117,8 +23,8 @@ const getUserFx = createEffect({
 
 const putUserFx = createEffect({
   handler: async (values) => {
-  	alert(JSON.stringify(values, null, '  ');
     await sleep();
+    alert(JSON.stringify(values, null, '  '));
   },
 });
 
@@ -154,11 +60,6 @@ const $isEmpty = createStore(true);
 
 $isEmpty.on($values.updates, (_, values) =>
   !values.username && !values.profile.firstName && !values.profile.lastName)
-```
-
-Input.jsx
-```jsx
-import React from 'react';
 
 const Input = ({
   controller,
@@ -173,13 +74,6 @@ const Input = ({
     </div>
   );
 };
-```
-
-Form.jsx
-```jsx
-import React from 'react';
-import {useForm} from 'react-effector-form';
-import Input from 'Input';
 
 const Form = () => {
   const {handleSubmit, controller} = useForm({$values});
@@ -204,7 +98,5 @@ const Form = () => {
     </form>
   );
 }
-```
 
-
-
+export default Form;

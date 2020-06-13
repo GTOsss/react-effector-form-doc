@@ -8,51 +8,48 @@ import UseFormExample from './UseFormExample';
 
 # useForm
 
-example
+```
+useForm({$values?, $errorsInline?, $fieldsInline?, $form?}) => ResultHook
+```
+$values, $errorsInline, $fieldsInline, $form - Custom store. You can pass a custom store with the necessary events. <br /> Any changes to the store will be reflected in the render
 
-Simple form
+|name         |type                                       |description|
+|---|---|---|
+|$values      |Effector.Store                             |Store for values. Nested objects with values can be stored.|
+|$errorsInline|Effector.Store<Record<string, Message>>    |Store for errors. <br /> Data must be stored in this format: <br /> { <br />&nbsp&nbsp username: 'Username error', <br />&nbsp&nbsp 'profile.fistName': 'Error' <br />} |
+|$fieldsInline|Effector.Store<Record<string, FieldState>> |Store for field errors. <br /> Controller will get the input state from here. <br /> FieldState consists of data such as: touched, blurred, changed, active.|
+|$form        |Effector.Store                             |Store for form state. State Form stores data such as: <br /> submitted, hasError (calculated automatically based on $errorsInline). <br />                            |
 
 
+## ResultHook
+```
+const {
+  controller: ({name: string, validate?: Validate}) => Controller, // You must call and pass the result to input.
+  handleSubmit: (e) => OnSubmit // Wrapper for your onSubmit.
+  setValue: ({field: string, value: any}) => void, // Allows you to pass a value
+  setOrDeleteError: ({ // Allows you to set an field error.
+    field: string,
+    error: Message // Pass '' | null | undefined as error to delete the error.
+  }) => void,
+} = useForm();
+```
+
+Example
 ```jsx
-import React from 'react';
-import {createStore} from 'effector';
-import {Controller, useForm} from 'react-effector-form';
-import './styles.scss';
-
-const Input = ({
-  controller,
-  label,
-}) => {
-  const {input, error, form, fieldState} = controller();
-
-  return (
-    <div className="input-wrap">
-      <label>{label}</label>
-      <input {...input} value={input.value || ''} />
-      {(form.submitted || fieldState.blurred) && error && (
-        <div className="input-error">
-          {error}
-        </div>
-      )}
-    </div>
-  );
-};
-
 const Form = () => {
   const {handleSubmit, controller} = useForm();
 
-  const onSubmit = (result) => {
-    console.log(result);
+  const onSubmit = ({values, form}) => {
+    if (!form.hasError) {
+      console.log(values);
+    }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input label="Name" controller={controller({name: 'name'})} />
-        <Input label="Nested field" controller={controller({name: 'nested.someField'})} />
-        <button type="submit">submit</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+       <Input label="Username" controller={controller({name: 'username'})} />
+    <form/>
   );
 }
+
 ```
