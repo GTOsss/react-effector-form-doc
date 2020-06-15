@@ -1,5 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-effector-form';
+import {useStore} from 'effector-react';
+import Code from '../components/code';
 
 const Input = ({
   controller,
@@ -16,28 +18,37 @@ const Input = ({
 };
 
 const Form = () => {
-  const {handleSubmit, controller} = useForm();
+  const {handleSubmit, controller, $values, $form, $fieldsInline} = useForm();
 
   const onSubmit = ({values}) => {
     alert(JSON.stringify(values, null, '  '));
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        label="Username"
-        controller={controller({name: 'username'})}
-      />
-      <Input
-        label="First name"
-        controller={controller({name: 'profile.firstName'})}
-      />
-      <Input
-        label="Last name"
-        controller={controller({name: 'profile.lastName'})}
-      />
-      <button type="submit">submit</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label="Username"
+          controller={controller({name: 'username'})}
+        />
+        <Input
+          label="First name"
+          controller={controller({name: 'profile.firstName'})}
+        />
+        <Input
+          label="Last name"
+          controller={controller({name: 'profile.lastName'})}
+        />
+        <button type="submit">submit</button>
+      </form>
+
+
+      <div className="row">
+        <Code source={$values} title="values" />
+        <Code source={$fieldsInline} title="fields state" />
+        <Code source={$form} title="form state" />
+      </div>
+    </div>
   );
 }
 

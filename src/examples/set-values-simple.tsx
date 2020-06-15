@@ -1,6 +1,8 @@
 import {useForm} from 'react-effector-form';
 import {createStore, createEvent} from 'effector';
 import React from 'react';
+import {useStore} from 'effector-react';
+import cn from 'classnames';
 
 const user = {
   username: 'gtosss',
@@ -32,6 +34,17 @@ const Input = ({
   );
 };
 
+const Code = ({source, title, className}) => {
+  const data = useStore(source)
+  const code = JSON.stringify(data, null, 2)
+  return (
+    <div className={cn('code', className)}>
+      <h1 className="code-title">{title}</h1>
+      <pre>{code}</pre>
+    </div>
+  )
+}
+
 const Form = () => {
   const {handleSubmit, controller} = useForm({$values});
 
@@ -40,14 +53,18 @@ const Form = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input label="Username" controller={controller({name: 'username'})} />
-      <Input label="First name" controller={controller({name: 'profile.firstName'})} />
-      <Input label="Last name" controller={controller({name: 'profile.lastName'})} />
-      <button type="button" onClick={() => setUser()}>load user</button>
-      <button type="button" onClick={() => clearUser()}>clear user</button>
-      <button type="submit">submit</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input label="Username" controller={controller({name: 'username'})} />
+        <Input label="First name" controller={controller({name: 'profile.firstName'})} />
+        <Input label="Last name" controller={controller({name: 'profile.lastName'})} />
+        <button type="button" onClick={() => setUser()}>load user</button>
+        <button type="button" onClick={() => clearUser()}>clear user</button>
+        <button type="submit">submit</button>
+      </form>
+
+      <Code className="code-center" source={$values} title="values" />
+    </div>
   );
 }
 

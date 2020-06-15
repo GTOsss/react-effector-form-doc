@@ -1,6 +1,7 @@
 import React from 'react';
 import {useForm} from 'react-effector-form';
 import cn from 'classnames';
+import {useStore} from 'effector-react';
 
 const validateRequired = (value) => !value ? 'Field is required' : undefined;
 
@@ -28,7 +29,7 @@ const Input = ({
 };
 
 const Form = () => {
-  const {handleSubmit, controller} = useForm();
+  const {handleSubmit, controller, $values, $errorsInline, $form} = useForm();
 
   const onSubmit = ({values, form}) => {
     if (!form.hasError) {
@@ -62,6 +63,12 @@ const Form = () => {
         />
         <button type="submit">submit</button>
       </form>
+
+      <div className="row">
+        <Code source={$values} title="values" />
+        <Code source={$errorsInline} title="errors" />
+        <Code source={$form} title="form state" />
+      </div>
     </div>
   );
 }
